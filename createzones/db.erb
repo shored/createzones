@@ -20,7 +20,7 @@ www	IN	A	192.168.1.1
 
 mail	IN	A	192.168.1.2
 
-<% File.open("labels.txt") do |file| %>
+<% File.open(File.expand_path(APP_ROOT) + "/labels.txt") do |file| %>
 <% while line = file.gets %>
 <% line.chomp! %>
 <%=line %> IN	A	192.168.1.<%= rand(254) %>

@@ -1,16 +1,19 @@
+# -*- coding: utf-8 -*-
 # Create zones, keys, signed zones, and named.conf from a fixed template and a hostlist
 # ルートの時の処理が美しくない
 
 # Read files : domains.txt
 
 require 'erb'
+require 'optparse'
+require 'fileutils'
 
 class Zone
 	attr_accessor :ns2, :child_zones
-	attr_reader :zonename, :ns, :soa, :manageaddr
+	attr_reader :zonename, :ns, :soa, :manageaddr, :zonedir
 
 #	def display
-#		puts ERB.new(File.read("db.erb")).result(binding)
+#		puts ERB.new(File.read(File.dirname(File.expand_path(__FILE__)) + "db.erb")).result(binding)
 #		for child in @child_zones do
 #			puts child.headlabel+"    IN    NS    ns."+child.headlabel+"\n"
 #			puts "ns."+child.headlabel+"	IN	A	"+child.ns+"\n"
@@ -18,14 +21,14 @@ class Zone
 #	end
 
 	def zonedata
-		data = ERB.new(File.read("db.erb")).result(binding)
+		data = ERB.new(File.read(File.dirname(File.expand_path(__FILE__)) + "/db.erb")).result(binding)
 		unless @child_zones == nil
 			for child in @child_zones do
 				puts "child:"+child.zonename
 				data += child.headlabel+"    IN    NS    ns."+child.headlabel+"\n"
 				data += "ns."+child.headlabel+"	IN	A	"+child.manageaddr+"\n"
 				# 署名しないゾーンはどうしようか?
-				data += File.read("zones/"+child.manageaddr+"/dsset-"+child.zonename+".")
+				data += File.read(@outdir+child.zonedir+"/tmp/namedb/dsset-"+child.zonename+".")
 			end
 		end
 
@@ -37,15 +40,20 @@ class Zone
 		return data
 	end
 
-	def initialize(nsaddr = nil, manageaddr = nil, zonename = nil)
+	def initialize(nsaddr = nil, manageaddr = nil, zonename = nil, zonedir = nil, outdir = "zones/")
 		@zonename = zonename
 		@ns = nsaddr
 		@manageaddr = manageaddr
+                if (zonedir == nil)
+                  zonedir = @zonename
+                end
+		@zonedir = zonedir +"/"
+                @outdir = outdir
 
 		@soa = 'ns.'+zonename
 
-		unless File.exist?("zones/"+@manageaddr)
-			Dir.mkdir("zones/"+@manageaddr)
+		unless File.exist?(@outdir+@zonedir+"/tmp/namedb/")
+			FileUtils.mkdir_p(@outdir+@zonedir+"/tmp/namedb/")
 		end
 
 		if (zonename != ".")
@@ -54,18 +62,17 @@ class Zone
 	end
 
 	def save_zonedata
-		File.open("zones/"+@manageaddr+"/"+@zonename+".db", "w") do |file|
+		File.open(@outdir+@zonedir+"/tmp/namedb/"+@zonename+".db", "w") do |file|
 			file.puts(zonedata)
 		end
-		Dir.chdir("zones/"+@manageaddr)
-		`/usr/sbin/dnssec-signzone -o #{@zonename} -e +120days #{@zonename}.db`
+                `/usr/sbin/dnssec-signzone -o #{@zonename} -e +120days -K #{@outdir}/#{@zonedir}/tmp/namedb/ #{@outdir}#{@zonedir}/tmp/namedb/#{@zonename}.db`
+                `mv dsset-#{@zonename}. #{@outdir}/#{@zonedir}/tmp/namedb/`
 		create_named_conf
-		Dir.chdir("../../")
 	end
 
 	def create_named_conf
-		data = ERB.new(File.read("../../named.conf.erb")).result(binding)
-		File.open("named.conf", "w") do |file|
+		data = ERB.new(File.read(File.dirname(File.expand_path(__FILE__)) + "/named.conf.erb")).result(binding)
+		File.open(@outdir+@zonedir+"/tmp/namedb/named.conf", "w") do |file|
 			file.puts(data)
 		end
 	end
@@ -76,42 +83,40 @@ class Zone
 
 private
 	def create_dnskeys
-		@kskname = `/usr/sbin/dnssec-keygen -K zones/#{@manageaddr} -r /dev/urandom -f KSK -a RSASHA1 -b 1024 #{@zonename}.`
-		@zskname = `/usr/sbin/dnssec-keygen -K zones/#{@manageaddr} -r /dev/urandom -a RSASHA1 -b 512 #{@zonename}.`
+                @kskname = `/usr/sbin/dnssec-keygen -K #{@outdir}#{@zonedir}/tmp/namedb/ -r /dev/urandom -f KSK -a RSASHA1 -b 1024 #{@zonename}.`
+                @zskname = `/usr/sbin/dnssec-keygen -K #{@outdir}#{@zonedir}/tmp/namedb/ -r /dev/urandom -a RSASHA1 -b 512 #{@zonename}.`
 		@kskname = @kskname.chomp
 		@zskname = @zskname.chomp
-		@kskdata = File.read("zones/"+@manageaddr+"/"+@kskname+".key")
-		@zskdata = File.read("zones/"+@manageaddr+"/"+@zskname+".key")
+		@kskdata = File.read(@outdir+@zonedir+"/tmp/namedb/"+@kskname+".key")
+		@zskdata = File.read(@outdir+@zonedir+"/tmp/namedb/"+@zskname+".key")
 	end
 
 end
 
 class Root < Zone
 	def save_zonedata
-		File.open("zones/"+@manageaddr+"/"+"fakeroot.zone", "w") do |file|
+		File.open(@outdir+@zonedir+"/tmp/namedb/"+"fakeroot.zone", "w") do |file|
 			file.puts(zonedata)
 		end
-		Dir.chdir("zones/"+@manageaddr)
 		create_named_conf
-		Dir.chdir("../../")
 	end
 
 	def create_named_conf
-		data = ERB.new(File.read("../../named.conf.fakeroot")).result(binding)
-		File.open("named.conf", "w") do |file|
+		data = ERB.new(File.read(File.dirname(File.expand_path(__FILE__)) +"/named.conf.fakeroot")).result(binding)
+		File.open(@outdir+@zonedir+"/tmp/namedb/named.conf", "w") do |file|
 			file.puts(data)
 		end
 	end
 
 	def zonedata
-		data = ERB.new(File.read("db.root.erb")).result(binding)
+		data = ERB.new(File.read(File.dirname(File.expand_path(__FILE__)) + "/db.root.erb")).result(binding)
 		unless @child_zones == nil
 			for child in @child_zones do
 				puts "child:"+child.zonename
 				data += child.headlabel+"    IN    NS    ns."+child.headlabel+"\n"
 				data += "ns."+child.headlabel+"	IN	A	"+child.manageaddr+"\n"
 				# 署名しないゾーンはどうしようか?
-#				data += File.read("zones/"+child.manageaddr+"/dsset-"+child.zonename+".")
+#				data += File.read(@outdir+child.manageaddr+"/dsset-"+child.zonename+".")
 			end
 		end
 
@@ -120,21 +125,21 @@ class Root < Zone
 end
 
 class Tree
-	def initialize
+	def initialize(nsconfig, outdir)
 		# create output directory
-		unless File.exist?("zones")
-			Dir.mkdir("zones")
+		unless File.exist?(outdir)
+			Dir.mkdir(outdir)
 		end
 
 		@zones = []
 		# 設定を引っ張って
-		File.open("nsconfig.txt") do |file|
+		File.open(nsconfig) do |file|
 			while line = file.gets
 				zone_setting = line.split(nil)
 				if (zone_setting[2] == ".")
-					@zones << Root.new(zone_setting[0], zone_setting[1], zone_setting[2])
+					@zones << Root.new(zone_setting[0], zone_setting[1], zone_setting[2], zone_setting[3], outdir)
 				else
-					@zones << Zone.new(zone_setting[0], zone_setting[1], zone_setting[2])
+					@zones << Zone.new(zone_setting[0], zone_setting[1], zone_setting[2], zone_setting[3], outdir)
 				end
 			end
 		end
@@ -181,5 +186,20 @@ private
 	end
 end
 
-tree = Tree.new
+opterr = false
+nsconfig = "nsconfig.txt"
+#outdir = "zones/"
+outdir = "./"
+
+opt = OptionParser.new
+opt.on('-n', '--nsconfig=VAL', 'specify ns configuration file') {|v| nsconfig = v}
+opt.on('-o', '--outdir=VAL', 'specify output directory name') {|v| outdir = v}
+opt.parse!(ARGV)
+if opterr
+  STDERR.print opt.help
+  exit 1
+end
+
+APP_ROOT = Dir.pwd + "/" + File.dirname(__FILE__)
+tree = Tree.new(nsconfig, outdir)
 tree.save
