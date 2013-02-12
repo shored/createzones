@@ -1,0 +1,141 @@
+; File written on Fri May 13 22:24:57 2011
+; dnssec_signzone version 9.7.3
+org.			3600	IN SOA	ns.org.org. root.ns.org.org. (
+					1          ; serial
+					604800     ; refresh (1 week)
+					86400      ; retry (1 day)
+					2419200    ; expire (4 weeks)
+					43200      ; minimum (12 hours)
+					)
+			3600	RRSIG	SOA 5 1 3600 20110910122457 (
+					20110513122457 44076 org.
+					kWxG3zBisiF937FmHnR5ShzYvxs8F2823r/8
+					125ekmqxpKyEMtS6ymtMK3EDldTJlzIs6gVE
+					iv83w6+T2ddJKw== )
+			3600	NS	ns.org.
+			3600	RRSIG	NS 5 1 3600 20110910122457 (
+					20110513122457 44076 org.
+					IrYNzujTy6NeGC7SAioWk355Vlo3d+G9abmy
+					QtqWAoLyAIWzFN3C5xBxE/9TUtMd2U08LQE2
+					XYJju+ZOPRVt5w== )
+			43200	NSEC	mail.org. NS SOA RRSIG NSEC DNSKEY
+			43200	RRSIG	NSEC 5 1 43200 20110910122457 (
+					20110513122457 44076 org.
+					nGfjaPqdrgqekt87l3lNsIVl1Ja2bVQSqwt+
+					Xg+WcnmRSfj4aD7foPDvxd94vuFez1qbVsZK
+					MzWDtx8xNBKM6A== )
+			3600	DNSKEY	256 3 5 (
+					AwEAAaYPgJRr8HpXI7Q8B69EDEtdqTZQFRWv
+					Y7bOb/Xtve7SuJJV2pLGFkwT3MrRdo+sBctd
+					eh7IB3QXplg45zwly2M=
+					) ; key id = 44076
+			3600	DNSKEY	257 3 5 (
+					AwEAAcAWevFHu78DiwX/QaQVE5RoRT/68Kix
+					YOw9eQmjieRk9vIS+6aKMQEUksnhz3TtdA4i
+					13VhHNdgLDkHHyQMioEdouclsrwvawFv7V/H
+					ipChXRusJMxFBNPP05fYNjHnVdm66vjd58zI
+					culp6smNqHwytJYbh2ouGx/eCEa+aX6X
+					) ; key id = 28231
+			3600	RRSIG	DNSKEY 5 1 3600 20110910122457 (
+					20110513122457 28231 org.
+					PGI9zclY5oSb21LYtN3l/oQ6SO3zjKduz4Kd
+					GEF2PSIRE5a2Dr6wSy3ZFdSErsIJvWRgFWq+
+					WGHWHzzSpN5tSWBvMObNOJi+EIC194Ubf83H
+					U7PHYSPaGvX9YGKSni5kiARWW0PPMJP9e/vE
+					JCaT1XkAvhcr4GCLJVjF5urjfog= )
+			3600	RRSIG	DNSKEY 5 1 3600 20110910122457 (
+					20110513122457 44076 org.
+					iOr6FKXHO9MBLlB60efX8xrKT57+FsD4rlrM
+					U7+FNifPZK5NO2L2wO2HRjgwd+t0gvH33dXW
+					kJVogGiZeBasWg== )
+ns.ukoiexam.org.	3600	IN A	192.168.255.73
+ns.org.			3600	IN A	192.168.255.71
+			3600	RRSIG	A 5 2 3600 20110910122457 (
+					20110513122457 44076 org.
+					fiGh4q+6dTHUkYkHKHoba7euFcoor8QKTbZW
+					RM1VFGSRBy/apnos1A8KqSsF4T3VM64bAkXx
+					9ytomQbCvoxdFQ== )
+			43200	NSEC	pc1.org. A RRSIG NSEC
+			43200	RRSIG	NSEC 5 2 43200 20110910122457 (
+					20110513122457 44076 org.
+					DtITY7OIWiqTa2WPNX3Ba0F7AJFclap+65x8
+					E/mgOO82XmldG7godREADN7hWgghvZFJfs7I
+					XKJF/tJ9iMCtVA== )
+mail.org.		3600	IN A	192.168.1.2
+			3600	RRSIG	A 5 2 3600 20110910122457 (
+					20110513122457 44076 org.
+					l0l5npe93qZqI/ZEt1Qy2U7TcEZmpBcaD7HU
+					0wLkVMC9pH38OxOA7Jh9xnh+3PMyrgt/o/MQ
+					FHxtM9b/vgaOZA== )
+			43200	NSEC	ns.org. A RRSIG NSEC
+			43200	RRSIG	NSEC 5 2 43200 20110910122457 (
+					20110513122457 44076 org.
+					PDf42BrmRBcwiYljmtXvw166hG+VzNkcoBVG
+					TO5UYb2ANAFXACzkJITf/R+hrCv4rFdZUFsk
+					vFW6U7gDaynD6g== )
+pc1.org.		3600	IN A	192.168.1.3
+			3600	RRSIG	A 5 2 3600 20110910122457 (
+					20110513122457 44076 org.
+					eOS5IwJH96o7fkdAkA/YmwYwo9+NEdN5pKOj
+					QGil0At0oX8PmuodSGXW2YQzsk40OYbNOo01
+					/ufQGpdP/NEBXg== )
+			43200	NSEC	pc2.org. A RRSIG NSEC
+			43200	RRSIG	NSEC 5 2 43200 20110910122457 (
+					20110513122457 44076 org.
+					GDj6GA+xKVgHkB8hCd92zUbJb1jcrEcIR95u
+					h1KE5rwodLgwEdtSbtQwesad1BX7Z1Zgge23
+					clVjrUECZ9vk6Q== )
+pc2.org.		3600	IN A	192.168.1.4
+			3600	RRSIG	A 5 2 3600 20110910122457 (
+					20110513122457 44076 org.
+					ZxRUsLc3d3OqRooxCWyOYoE+1azh5+ApYb6R
+					g2JkAaqleP5x2O1CW12BU4me1eXHqhRS2gMp
+					IrkZAnntovbi1Q== )
+			43200	NSEC	ukoiexam.org. A RRSIG NSEC
+			43200	RRSIG	NSEC 5 2 43200 20110910122457 (
+					20110513122457 44076 org.
+					EunurAhT/WGl2+ClqHopo8cP2regtj2SH1cN
+					mI/8X/v5SwtD/Mt0Gph0Y+d1aMfcskcM9rso
+					gc9r1uTrtaaCIw== )
+ukoiexam.org.		3600	IN NS	ns.ukoiexam.org.
+			3600	DS	41629 5 1 (
+					E8D9DB0A2D0CAD2E43E2B13D69A58681D2F0
+					058D )
+			3600	DS	41629 5 2 (
+					B324C3BCFE74959F5979D1AD146C7D5AA04A
+					97A3686393D4B199E33E546D26F5 )
+			3600	RRSIG	DS 5 2 3600 20110910122457 (
+					20110513122457 44076 org.
+					hz8fiAKoWAIidkLWnEbWBeCgj7Cn8JFZj9Dn
+					U0zqyVCnwnMCf6eP5n2w4xMvo29fMEdx/ofU
+					uC0wc+xI2TxCEA== )
+			43200	NSEC	www.org. NS DS RRSIG NSEC
+			43200	RRSIG	NSEC 5 2 43200 20110910122457 (
+					20110513122457 44076 org.
+					azCljxlHlirBOTQ5IstY3ndxj3qx51q88KfU
+					M3au+CPmUGVzUfs6amADMF5F3lv4ucffyVfx
+					3vxYaXBmjeeOVA== )
+www.org.		3600	IN A	192.168.1.1
+			3600	RRSIG	A 5 2 3600 20110910122457 (
+					20110513122457 44076 org.
+					afjQrms9//HcHOQBjp8s7AoUJKNmFRlCUSFf
+					OmFWVGOUvkTPt3Wq9vNxdF3mLBL9ikT/oyZP
+					TeoGqQP3uEqdLA== )
+			3600	MX	10 mail.org.
+			3600	RRSIG	MX 5 2 3600 20110910122457 (
+					20110513122457 44076 org.
+					kaaBBSQAGzRLxNnNDbedHXl/Eueqyi9bfNV/
+					J6mo0Zi4BGsUFw1s8Vu7Sgv46djpYYglnNf5
+					D1jkzxpIvaRIeg== )
+			3600	AAAA	ff02::1
+			3600	RRSIG	AAAA 5 2 3600 20110910122457 (
+					20110513122457 44076 org.
+					ko5rCOegAaV9qn/65PA5MCW/CA2PxoYiRUoB
+					GxVv05lNui+ETJwILavKYXOB0YUWlw7GQlTx
+					VT3wPp+r8fwMKA== )
+			43200	NSEC	org. A MX AAAA RRSIG NSEC
+			43200	RRSIG	NSEC 5 2 43200 20110910122457 (
+					20110513122457 44076 org.
+					m3ndVL5JmNLog6pidhoWZtZRxa9SUQjJ4Diz
+					b1vArCZ//RqscVUWd9CgVvKBANGwR8f2qkd3
+					BZd5pV1d131EPw== )

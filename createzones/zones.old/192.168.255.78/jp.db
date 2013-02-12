@@ -1,0 +1,38 @@
+;
+; This zonedata is written by db.rb
+;
+$TTL	3600
+@	IN	SOA	ns.jp root.ns.jp (
+			      1		; Serial
+			 604800		; Refresh
+			  86400		; Retry
+			2419200		; Expire
+			  43200 )	; Negative Cache TTL
+;
+@	IN	NS	ns
+
+ns	IN	A	192.168.255.78
+
+www	IN	A	192.168.1.1
+	IN	AAAA	ff02::1
+
+	IN	MX	10	mail
+
+mail	IN	A	192.168.1.2
+
+pc1	IN	A	192.168.1.3
+pc2	IN	A	192.168.1.4
+ukoiexam    IN    NS    ns.ukoiexam
+ns.ukoiexam	IN	A	192.168.255.79
+ukoiexam.jp.		IN DS 4096 5 1 0CC14869AF4EA673F0D920145E324EF5BE8DF0C7
+ukoiexam.jp.		IN DS 4096 5 2 4DE3839670538C1D4F06AA46A9F6C61AB0C6967824120967CCAAE65B 26C5C622
+; This is a zone-signing key, keyid 31323, for jp.
+; Created: 20110513132456 (Fri May 13 22:24:56 2011)
+; Publish: 20110513132456 (Fri May 13 22:24:56 2011)
+; Activate: 20110513132456 (Fri May 13 22:24:56 2011)
+jp. IN DNSKEY 256 3 5 AwEAAdegCiNeaoImt2odBBJ+80Wvj581xj3+dWYhDGtY2dHpjxMgmBkw eZt0vxMOHCSYrBzChp2KoR7+s35NiVb2AfE=
+; This is a key-signing key, keyid 10684, for jp.
+; Created: 20110513132456 (Fri May 13 22:24:56 2011)
+; Publish: 20110513132456 (Fri May 13 22:24:56 2011)
+; Activate: 20110513132456 (Fri May 13 22:24:56 2011)
+jp. IN DNSKEY 257 3 5 AwEAAdA/HLmgv9PKJgfmzsWBdmt0fth8XHTYGpZe6m5n06OD4K3JxB/r oGZUqDOOJy7z7Tu2KnQqtx/IN3AHoSX/BHrTWMYwlzJeOp13eQYqz7UM 3qXG4n7kyAfzoWmBPoA9rlyrNSkLebCGsWbP5mT3BibSnL5eTMUFYyOf Rhp8I/Qb

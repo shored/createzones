@@ -1,0 +1,38 @@
+;
+; This zonedata is written by db.rb
+;
+$TTL	3600
+@	IN	SOA	ns.net root.ns.net (
+			      1		; Serial
+			 604800		; Refresh
+			  86400		; Retry
+			2419200		; Expire
+			  43200 )	; Negative Cache TTL
+;
+@	IN	NS	ns
+
+ns	IN	A	192.168.255.76
+
+www	IN	A	192.168.1.1
+	IN	AAAA	ff02::1
+
+	IN	MX	10	mail
+
+mail	IN	A	192.168.1.2
+
+pc1	IN	A	192.168.1.3
+pc2	IN	A	192.168.1.4
+ukoiexam    IN    NS    ns.ukoiexam
+ns.ukoiexam	IN	A	192.168.255.77
+ukoiexam.net.		IN DS 17536 5 1 F129DD631671B5386A1E852A5FE5ADD580A0F775
+ukoiexam.net.		IN DS 17536 5 2 AD262C37B35BF0B40C3775FAC1539DE1CED0FD6DF987A29F9AF18F92 1A31ECDD
+; This is a zone-signing key, keyid 35805, for net.
+; Created: 20110513132456 (Fri May 13 22:24:56 2011)
+; Publish: 20110513132456 (Fri May 13 22:24:56 2011)
+; Activate: 20110513132456 (Fri May 13 22:24:56 2011)
+net. IN DNSKEY 256 3 5 AwEAAc5YhAz57TrZauGPClel77dOxekFiwPxoNL3oaIl8+E2MJbwr3ZZ aPsed9tEDJlKbE04+EwMi1RLjUfabK0If7c=
+; This is a key-signing key, keyid 3268, for net.
+; Created: 20110513132456 (Fri May 13 22:24:56 2011)
+; Publish: 20110513132456 (Fri May 13 22:24:56 2011)
+; Activate: 20110513132456 (Fri May 13 22:24:56 2011)
+net. IN DNSKEY 257 3 5 AwEAAcXDHaWs6L3igcqf8Xy5WzCrGs9N7ECCGUsjeTguPiimF0TS2rfw w9n+mm9w3CQrpeVlMvfSvtDRNhXcOrlSd7K+uREGM3FmmCzBYLDwT/Q/ g1D5CFWOT6EOCO1KE+emzhBevKhFRcBH0SAyz2r5sdkXsO8xdIjEVGzL 4McKe6Bb

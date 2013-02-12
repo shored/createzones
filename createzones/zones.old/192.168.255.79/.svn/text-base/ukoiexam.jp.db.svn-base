@@ -1,0 +1,38 @@
+;
+; This zonedata is written by db.rb
+;
+$TTL	3600
+@	IN	SOA	ns.ukoiexam.jp root.ns.ukoiexam.jp (
+			      1		; Serial
+			 604800		; Refresh
+			  86400		; Retry
+			2419200		; Expire
+			  43200 )	; Negative Cache TTL
+;
+@	IN	NS	ns
+
+ns	IN	A	192.168.255.79
+
+www	IN	A	192.168.1.1
+	IN	AAAA	ff02::1
+
+	IN	MX	10	mail
+
+mail	IN	A	192.168.1.2
+
+pc1	IN	A	192.168.1.3
+pc2	IN	A	192.168.1.4
+second    IN    NS    ns.second
+ns.second	IN	A	192.168.255.80
+second.ukoiexam.jp.	IN DS 8002 5 1 B748B1AB7EDF3C5171CA79371C61AAC30D792155
+second.ukoiexam.jp.	IN DS 8002 5 2 59C51409EC6135CC29B2F21BAE7B495C3D2C0C8222E5ADE45FC36203 F98BB579
+; This is a zone-signing key, keyid 18396, for ukoiexam.jp.
+; Created: 20110513132456 (Fri May 13 22:24:56 2011)
+; Publish: 20110513132456 (Fri May 13 22:24:56 2011)
+; Activate: 20110513132456 (Fri May 13 22:24:56 2011)
+ukoiexam.jp. IN DNSKEY 256 3 5 AwEAAdLcb729rUAGJ5JVhp7wexzyfgyNW+w4gR4uG8VHHVzb0FdMTUbN u9RNuTJtDwrYd4WhBtq2AR0xRUu0Ul9SuG0=
+; This is a key-signing key, keyid 4096, for ukoiexam.jp.
+; Created: 20110513132456 (Fri May 13 22:24:56 2011)
+; Publish: 20110513132456 (Fri May 13 22:24:56 2011)
+; Activate: 20110513132456 (Fri May 13 22:24:56 2011)
+ukoiexam.jp. IN DNSKEY 257 3 5 AwEAAeBHmvgh+gtTZMbO1feRYfjoXqpFZGnQuU7GBbB4i4cfR7YQk+d0 xxsCL3btxytatif9M3x3rwEuAnVYbK02u2Vix9gdandKBe3+CyHpNJU/ BeOxu3M0dSvbnVmIbHLvefVmIJnZFKs00yA7ovIW1MC4AgsY3P+ljpvI lBfa2iVd

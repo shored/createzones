@@ -1,0 +1,34 @@
+;
+; This zonedata is written by db.rb
+;
+$TTL	3600
+@	IN	SOA	ns.ukoiexam.org root.ns.ukoiexam.org (
+			      1		; Serial
+			 604800		; Refresh
+			  86400		; Retry
+			2419200		; Expire
+			  43200 )	; Negative Cache TTL
+;
+@	IN	NS	ns
+
+ns	IN	A	192.168.255.73
+
+www	IN	A	192.168.1.1
+	IN	AAAA	ff02::1
+
+	IN	MX	10	mail
+
+mail	IN	A	192.168.1.2
+
+pc1	IN	A	192.168.1.3
+pc2	IN	A	192.168.1.4
+; This is a zone-signing key, keyid 49431, for ukoiexam.org.
+; Created: 20110513132456 (Fri May 13 22:24:56 2011)
+; Publish: 20110513132456 (Fri May 13 22:24:56 2011)
+; Activate: 20110513132456 (Fri May 13 22:24:56 2011)
+ukoiexam.org. IN DNSKEY 256 3 5 AwEAAcUGJKLEl3NCdX2hs6F9sSjTPF/UtwY4lNAGDxtKkfcbz9ELF9Fy fuA5+v/Z5Lv5kyMxl3RxKW5yBDzvNzDd6Uc=
+; This is a key-signing key, keyid 41629, for ukoiexam.org.
+; Created: 20110513132456 (Fri May 13 22:24:56 2011)
+; Publish: 20110513132456 (Fri May 13 22:24:56 2011)
+; Activate: 20110513132456 (Fri May 13 22:24:56 2011)
+ukoiexam.org. IN DNSKEY 257 3 5 AwEAAd7RgmyrAPusSeyIAmNSR86PVy6pJisOL+pTHrgbEYdqf7Y7oRAm oM0589YeutW8uYPlX83e2ggbW8Kyfn5Xc8PiGCp0HHhS2tfcqJOES30F cHYIF0n1SZnHoM7wYAofBiJpyJZjOycl2l5cisnQp7czIPczLWLyzrF1 vaCp6xkN

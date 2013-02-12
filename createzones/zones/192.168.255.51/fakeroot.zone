@@ -1,0 +1,21 @@
+;
+; This zonedata is written by db.root.erb
+;
+$TTL 3600
+@               IN      SOA     ns. root.ns. (
+                                1      ; Serial
+                                1800            ; Refresh
+                                900             ; Retry
+                                604800          ; Expire
+                                300           ; TTL
+                                )
+                        IN      NS      ns
+ns                      IN      A    10.0.76.1
+jp    IN    NS    ns.jp
+ns.jp	IN	A	192.168.255.52
+com    IN    NS    ns.com
+ns.com	IN	A	192.168.255.53
+net    IN    NS    ns.net
+ns.net	IN	A	192.168.255.54
+org    IN    NS    ns.org
+ns.org	IN	A	192.168.255.55

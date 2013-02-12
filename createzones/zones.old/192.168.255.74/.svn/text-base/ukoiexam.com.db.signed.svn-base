@@ -1,0 +1,141 @@
+; File written on Fri May 13 22:24:57 2011
+; dnssec_signzone version 9.7.3
+ukoiexam.com.		3600	IN SOA	ns.ukoiexam.com.ukoiexam.com. root.ns.ukoiexam.com.ukoiexam.com. (
+					1          ; serial
+					604800     ; refresh (1 week)
+					86400      ; retry (1 day)
+					2419200    ; expire (4 weeks)
+					43200      ; minimum (12 hours)
+					)
+			3600	RRSIG	SOA 5 2 3600 20110910122457 (
+					20110513122457 1848 ukoiexam.com.
+					DxifCpQ6q3B5q2oYZgzguouZczgat+pkoP3O
+					R2EpggaCDz0dEDwJ1YxF8OBBNLryMWMf1X6/
+					1+3+Rgx8k3oSFg== )
+			3600	NS	ns.ukoiexam.com.
+			3600	RRSIG	NS 5 2 3600 20110910122457 (
+					20110513122457 1848 ukoiexam.com.
+					bHKRJfgnd2tEnpWgvi3Mb8ZboRfGvoM/CxFN
+					qcAFjTO9ge4xzBkn49XPyc+SjGddfqtArV3L
+					+tyGHqy6g62sHA== )
+			43200	NSEC	mail.ukoiexam.com. NS SOA RRSIG NSEC DNSKEY
+			43200	RRSIG	NSEC 5 2 43200 20110910122457 (
+					20110513122457 1848 ukoiexam.com.
+					pKI9gisrdBOlAi1idGo7KsNkX8iS5RdeQe3y
+					BaBAcFpFWNd+XMPxDvxUMemCn8eYMssFjDyv
+					P4QdaLNHA7Lx6w== )
+			3600	DNSKEY	256 3 5 (
+					AwEAAeXqllG1aYnCw/MXGYuIFuFnpoYnFq2a
+					zOpLTcoVjx0W2Rg48MLS2jgA/A9fKFxoZhx2
+					H4denITs5+qQ9Tt6mTs=
+					) ; key id = 1848
+			3600	DNSKEY	257 3 5 (
+					AwEAAaHX3meTxlli3lql8qXuhJw5cBYDdK9e
+					JwLObRDpYpzEYYUas26mbVckiQhl/rMBW+dD
+					21WGc16rCpixSOt2ek9k0QsogA3D5ddGzxIE
+					gBkdZ6V8ytLvWhqsYwPLl9rcuRizBYcPVJJ0
+					z3JXx9XQ8zAewtRDiCUeT5kMmqxpgBlb
+					) ; key id = 14491
+			3600	RRSIG	DNSKEY 5 2 3600 20110910122457 (
+					20110513122457 1848 ukoiexam.com.
+					oJqCDsho4iYI/8pN8dOytyV3CB+qTGCLcEMM
+					IqeT2YojfvlHh2DPbdFEW1NUoTuwP+/k7ouX
+					GaXJCBEp75c5+w== )
+			3600	RRSIG	DNSKEY 5 2 3600 20110910122457 (
+					20110513122457 14491 ukoiexam.com.
+					RspuD6EpRjZTz/N0+qYAdPbDrTeo+5GpJgXU
+					W6FtjcT10HkI8IanyXgzyOnit0dKO5VV7v7q
+					emCX+/5Cd2b/065/lnO6oXWZu/CpFT3LlzXz
+					nhWK3pF3NBdf9HB1f89aadZvbFoZG+3IZUlV
+					1Dq422uwjTaJtczffHM8LkYmCX8= )
+ns.second.ukoiexam.com.	3600	IN A	192.168.255.75
+second.ukoiexam.com.	3600	IN NS	ns.second.ukoiexam.com.
+			3600	DS	47791 5 1 (
+					C20003DC15486D7634BC94D5B495AC82CC0F
+					2BD4 )
+			3600	DS	47791 5 2 (
+					6773AD8AEADDA20A81B5B52667E2C6E29E01
+					C62043DCFB7F3151DCB368004AFE )
+			3600	RRSIG	DS 5 3 3600 20110910122457 (
+					20110513122457 1848 ukoiexam.com.
+					TUQjV5MGWDS2D/sr4ZgZwZtkao+o1IW0BtUF
+					LOohfB6qA7wRLHBZHQhBwh7KJ0Eo/fjtA0Nq
+					Q+/YyEHmSS5zPA== )
+			43200	NSEC	www.ukoiexam.com. NS DS RRSIG NSEC
+			43200	RRSIG	NSEC 5 3 43200 20110910122457 (
+					20110513122457 1848 ukoiexam.com.
+					qEwRidz3FFoO7O0mcMf9FoMYsm1UXvQix1d3
+					wLuCeA15ueVbtxwxx1U/7L4WABeNC5sod/tf
+					EXeEh3MAhC4j+g== )
+pc2.ukoiexam.com.	3600	IN A	192.168.1.4
+			3600	RRSIG	A 5 3 3600 20110910122457 (
+					20110513122457 1848 ukoiexam.com.
+					eTmlA6cnn8LB2H3SH9zpRAB3etZZj7ZqK4Qf
+					5BPkJlHdmgtG6PS0q+T1OKAm9cvkVs3daaTz
+					yfH21C/3tKX1rQ== )
+			43200	NSEC	second.ukoiexam.com. A RRSIG NSEC
+			43200	RRSIG	NSEC 5 3 43200 20110910122457 (
+					20110513122457 1848 ukoiexam.com.
+					nTxATyoip1b7rf0NXCduhMoj+DHX713etCuy
+					OYIRXMfTb0xyKms+a+A54Kr7ZKPgPcbi/iMF
+					L1skzZIQrlqK9Q== )
+ns.ukoiexam.com.	3600	IN A	192.168.255.74
+			3600	RRSIG	A 5 3 3600 20110910122457 (
+					20110513122457 1848 ukoiexam.com.
+					ZiqFqRCy05pGB/hIVeyiEa4QRfG8+C3F/7o+
+					zOZNxc4wAXa+AwrrUrUcKDFSpec9Bp2WD7S5
+					d6OEEbyGZRlMoA== )
+			43200	NSEC	pc1.ukoiexam.com. A RRSIG NSEC
+			43200	RRSIG	NSEC 5 3 43200 20110910122457 (
+					20110513122457 1848 ukoiexam.com.
+					STqx/fUu7njOHGArThzbcbvzyJfjPZJN7Wys
+					66MTnqLab/d5pj4NzQX84xz5HKgCvQDgO7zE
+					UDipO0ywJ2aAUQ== )
+pc1.ukoiexam.com.	3600	IN A	192.168.1.3
+			3600	RRSIG	A 5 3 3600 20110910122457 (
+					20110513122457 1848 ukoiexam.com.
+					gKeKMi2cJ1kcdK+55Fn3TrhI5p6sUvQ1OqHo
+					CaV5O7MLkDC2FFWcN3ZL6pPjOor+oeUnlNxW
+					LGIBIyvQsdIgJA== )
+			43200	NSEC	pc2.ukoiexam.com. A RRSIG NSEC
+			43200	RRSIG	NSEC 5 3 43200 20110910122457 (
+					20110513122457 1848 ukoiexam.com.
+					WNWcl2dTyWMiCJAnRYJQ87au7LGyU5HozWWe
+					NB+cprxqIPK8fKVWJ2051ylZ1Pd4bx5ID6HU
+					MC3ZRYyGJBMaFQ== )
+mail.ukoiexam.com.	3600	IN A	192.168.1.2
+			3600	RRSIG	A 5 3 3600 20110910122457 (
+					20110513122457 1848 ukoiexam.com.
+					TLJAvqH7jm+EZF//HyyDb8BoikdK8BFlzs3J
+					8+JhY7X1Q+nq0NyL6gc5IB1wsnd53bvSweHz
+					Bluq/0vQ2T5giw== )
+			43200	NSEC	ns.ukoiexam.com. A RRSIG NSEC
+			43200	RRSIG	NSEC 5 3 43200 20110910122457 (
+					20110513122457 1848 ukoiexam.com.
+					Z/XUCtMDTgKPKkg2Y5K/IvuNVNu30Btc04wB
+					BS8Nw3+q0ER57pc8R2gzZpxKlEmrITlcgPGZ
+					1QxdWpkfaCfYBg== )
+www.ukoiexam.com.	3600	IN A	192.168.1.1
+			3600	RRSIG	A 5 3 3600 20110910122457 (
+					20110513122457 1848 ukoiexam.com.
+					v9+utNQ8Rvvfc0f0kkCg/eEemCT6kd4+axkq
+					Tqg9w3A00yFLg8s8r8XadYeAuuEZW+grsEWS
+					seQeRe57s7OayQ== )
+			3600	MX	10 mail.ukoiexam.com.
+			3600	RRSIG	MX 5 3 3600 20110910122457 (
+					20110513122457 1848 ukoiexam.com.
+					z4/3wJQesbSZWo9UgFQTuVJzY0o0ZMau2RDY
+					izxK7tEOEF4OvaUx5cuR+eNsTlzwBwIj53J5
+					bfyKUbplKndIRw== )
+			3600	AAAA	ff02::1
+			3600	RRSIG	AAAA 5 3 3600 20110910122457 (
+					20110513122457 1848 ukoiexam.com.
+					PK1E8w0BijtXOy4X/79tl7ALhgAWHw6Q3R0c
+					DrvRF3bWOrKwrY5pZCBFxydxysWaxyN8mw+D
+					fcvbWK/FO6tiKA== )
+			43200	NSEC	ukoiexam.com. A MX AAAA RRSIG NSEC
+			43200	RRSIG	NSEC 5 3 43200 20110910122457 (
+					20110513122457 1848 ukoiexam.com.
+					pprcyW2Cqklop25lG4FANS75lMx71uhXfvgA
+					vcA7JRPsFuAYZof9mnZgYlzxe7utv98shw59
+					PtasZ0WAR4Uo4A== )

@@ -1,0 +1,38 @@
+;
+; This zonedata is written by db.rb
+;
+$TTL	3600
+@	IN	SOA	ns.org root.ns.org (
+			      1		; Serial
+			 604800		; Refresh
+			  86400		; Retry
+			2419200		; Expire
+			  43200 )	; Negative Cache TTL
+;
+@	IN	NS	ns
+
+ns	IN	A	192.168.255.71
+
+www	IN	A	192.168.1.1
+	IN	AAAA	ff02::1
+
+	IN	MX	10	mail
+
+mail	IN	A	192.168.1.2
+
+pc1	IN	A	192.168.1.3
+pc2	IN	A	192.168.1.4
+ukoiexam    IN    NS    ns.ukoiexam
+ns.ukoiexam	IN	A	192.168.255.73
+ukoiexam.org.		IN DS 41629 5 1 E8D9DB0A2D0CAD2E43E2B13D69A58681D2F0058D
+ukoiexam.org.		IN DS 41629 5 2 B324C3BCFE74959F5979D1AD146C7D5AA04A97A3686393D4B199E33E 546D26F5
+; This is a zone-signing key, keyid 44076, for org.
+; Created: 20110513132456 (Fri May 13 22:24:56 2011)
+; Publish: 20110513132456 (Fri May 13 22:24:56 2011)
+; Activate: 20110513132456 (Fri May 13 22:24:56 2011)
+org. IN DNSKEY 256 3 5 AwEAAaYPgJRr8HpXI7Q8B69EDEtdqTZQFRWvY7bOb/Xtve7SuJJV2pLG FkwT3MrRdo+sBctdeh7IB3QXplg45zwly2M=
+; This is a key-signing key, keyid 28231, for org.
+; Created: 20110513132456 (Fri May 13 22:24:56 2011)
+; Publish: 20110513132456 (Fri May 13 22:24:56 2011)
+; Activate: 20110513132456 (Fri May 13 22:24:56 2011)
+org. IN DNSKEY 257 3 5 AwEAAcAWevFHu78DiwX/QaQVE5RoRT/68KixYOw9eQmjieRk9vIS+6aK MQEUksnhz3TtdA4i13VhHNdgLDkHHyQMioEdouclsrwvawFv7V/HipCh XRusJMxFBNPP05fYNjHnVdm66vjd58zIculp6smNqHwytJYbh2ouGx/e CEa+aX6X
