@@ -10,7 +10,7 @@ require 'fileutils'
 
 class Zone
 	attr_accessor :ns2, :child_zones
-	attr_reader :zonename, :ns, :soa, :manageaddr, :zonedir
+	attr_reader :zonename, :ns, :soa, :manageaddr, :zonedir, :isdnssec
 
 #	def display
 #		puts ERB.new(File.read(File.dirname(File.expand_path(__FILE__)) + "db.erb")).result(binding)
@@ -40,7 +40,7 @@ class Zone
 		return data
 	end
 
-	def initialize(nsaddr = nil, manageaddr = nil, zonename = nil, zonedir = nil, outdir = "zones/")
+	def initialize(nsaddr = nil, manageaddr = nil, zonename = nil, zonedir = nil, isdnssec = "yes", outdir = "zones/")
 		@zonename = zonename
 		@ns = nsaddr
 		@manageaddr = manageaddr
@@ -51,6 +51,10 @@ class Zone
                 @outdir = outdir
 
 		@soa = 'ns.'+zonename
+          	@issigned = ''
+          	if (isdnssec == "yes")
+                  @issigned = '.signed'
+                end
 
 		unless File.exist?(@outdir+@zonedir+"/tmp/namedb/")
 			FileUtils.mkdir_p(@outdir+@zonedir+"/tmp/namedb/")
@@ -65,8 +69,10 @@ class Zone
 		File.open(@outdir+@zonedir+"/tmp/namedb/"+@zonename+".db", "w") do |file|
 			file.puts(zonedata)
 		end
-                `/usr/sbin/dnssec-signzone -o #{@zonename} -e +120days -K #{@outdir}/#{@zonedir}/tmp/namedb/ #{@outdir}#{@zonedir}/tmp/namedb/#{@zonename}.db`
-                `mv dsset-#{@zonename}. #{@outdir}/#{@zonedir}/tmp/namedb/`
+                if (@issigned != "")
+                  `/usr/sbin/dnssec-signzone -o #{@zonename} -e +120days -K #{@outdir}/#{@zonedir}/tmp/namedb/ #{@outdir}#{@zonedir}/tmp/namedb/#{@zonename}.db`
+                  `mv dsset-#{@zonename}. #{@outdir}/#{@zonedir}/tmp/namedb/`
+                end
 		create_named_conf
 	end
 
@@ -137,9 +143,9 @@ class Tree
 			while line = file.gets
 				zone_setting = line.split(nil)
 				if (zone_setting[2] == ".")
-					@zones << Root.new(zone_setting[0], zone_setting[1], zone_setting[2], zone_setting[3], outdir)
+					@zones << Root.new(zone_setting[0], zone_setting[1], zone_setting[2], zone_setting[3], zone_setting[4], outdir)
 				else
-					@zones << Zone.new(zone_setting[0], zone_setting[1], zone_setting[2], zone_setting[3], outdir)
+					@zones << Zone.new(zone_setting[0], zone_setting[1], zone_setting[2], zone_setting[3], zone_setting[4], outdir)
 				end
 			end
 		end

@@ -35,7 +35,7 @@ logging {
 // prime the server with knowledge of the root servers
 zone "<%= @zonename%>." {
 	type master;
-	file "/tmp/namedb/<%= @zonename %>.db.signed";
+	file "/tmp/namedb/<%= @zonename %>.db<%= @issigned %>";
         allow-update {
            127.0.0.1;
         };

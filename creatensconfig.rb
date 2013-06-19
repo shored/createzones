@@ -1,10 +1,11 @@
 #!/usr/bin/ruby
+# -*- coding: utf-8 -*-
 
 ## create nsconfig.txt file
 ## 管理アドレスとサーバアドレスとドメインの組
 
-#(puppet 的な管理アドレス)	(NS の動くアドレス)	ドメイン名
-#AAA.AAA.AAA.AAA		BBB.BBB.BBB.BBB		ドメイン名
+#(puppet 的な管理アドレス)	(NS の動くアドレス)	ドメイン名    出力ディレクトリ名  DNSSEC有効/無効
+#AAA.AAA.AAA.AAA		BBB.BBB.BBB.BBB		ドメイン名    (ディレクトリ名)   (yes/no)
 
 # 読みファイル
 # samplehosts
@@ -48,6 +49,6 @@ end
 domains.sort!{|a, b| a.length <=> b.length }
 i = 0
 for result in results
-	printf("%s	%s	%s\n", result[0], result[1], domains[i])
+	printf("%s	%s	%s	%s	%s\n", result[0], result[1], domains[i], result[1], "yes")
 	i += 1
 end
