@@ -28,7 +28,9 @@ class Zone
 				data += child.headlabel+"    IN    NS    ns."+child.headlabel+"\n"
 				data += "ns."+child.headlabel+"	IN	A	"+child.manageaddr+"\n"
 				# 署名しないゾーンはどうしようか?
-				data += File.read(@outdir+child.zonedir+"/tmp/namedb/dsset-"+child.zonename+".")
+                                if (@issigned != "")
+                                  data += File.read(@outdir+child.zonedir+"/tmp/namedb/dsset-"+child.zonename+".")
+                                end
 			end
 		end
 
