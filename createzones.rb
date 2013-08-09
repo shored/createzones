@@ -62,9 +62,7 @@ class Zone
 			FileUtils.mkdir_p(@outdir+@zonedir+"/tmp/namedb/")
 		end
 
-		if (zonename != ".")
-			create_dnskeys
-		end
+		create_dnskeys
 	end
 
 	def save_zonedata
@@ -130,6 +128,16 @@ class Root < Zone
 
 		return data
 	end
+
+        def create_dnskeys
+                @kskname = `/usr/sbin/dnssec-keygen -K #{@outdir}#{@zonedir}/tmp/namedb/ -r /dev/urandom -f KSK -a RSASHA1 -b 1024 .`
+                @zskname = `/usr/sbin/dnssec-keygen -K #{@outdir}#{@zonedir}/tmp/namedb/ -r /dev/urandom -a RSASHA1 -b 512 .`
+                @kskname = @kskname.chomp
+                @zskname = @zskname.chomp
+                @kskdata = File.read(@outdir+@zonedir+"tmp/namedb/"+@kskname+".key")
+                @zskdata = File.read(@outdir+@zonedir+"/tmp/namedb/"+@zskname+".key")
+        end
+
 end
 
 class Tree
@@ -145,7 +153,7 @@ class Tree
 			while line = file.gets
 				zone_setting = line.split(nil)
 				if (zone_setting[2] == ".")
-					@zones << Root.new(zone_setting[0], zone_setting[1], zone_setting[2], zone_setting[3], zone_setting[4], outdir)
+					@zones << Root.new(zone_setting[0], zone_setting[1], zone_setting[2], "root", zone_setting[4], outdir)
 				else
 					@zones << Zone.new(zone_setting[0], zone_setting[1], zone_setting[2], zone_setting[3], zone_setting[4], outdir)
 				end
@@ -196,8 +204,8 @@ end
 
 opterr = false
 nsconfig = "nsconfig.txt"
-#outdir = "zones/"
-outdir = "./"
+outdir = "zones/"
+#outdir = "./"
 
 opt = OptionParser.new
 opt.on('-n', '--nsconfig=VAL', 'specify ns configuration file') {|v| nsconfig = v}
