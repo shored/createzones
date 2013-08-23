@@ -153,7 +153,7 @@ class Tree
 			while line = file.gets
 				zone_setting = line.split(nil)
 				if (zone_setting[2] == ".")
-					@zones << Root.new(zone_setting[0], zone_setting[1], zone_setting[2], "root", zone_setting[4], outdir)
+					@zones << Root.new(zone_setting[0], zone_setting[1], zone_setting[2], zone_setting[3], zone_setting[4], outdir)
 				else
 					@zones << Zone.new(zone_setting[0], zone_setting[1], zone_setting[2], zone_setting[3], zone_setting[4], outdir)
 				end
@@ -205,7 +205,6 @@ end
 opterr = false
 nsconfig = "nsconfig.txt"
 outdir = "zones/"
-#outdir = "./"
 
 opt = OptionParser.new
 opt.on('-n', '--nsconfig=VAL', 'specify ns configuration file') {|v| nsconfig = v}
