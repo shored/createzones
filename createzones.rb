@@ -70,7 +70,7 @@ class Zone
 			file.puts(zonedata)
 		end
                 if (@issigned != "")
-                  `/usr/sbin/dnssec-signzone -o #{@zonename} -e +120days -K #{@outdir}/#{@zonedir}/tmp/namedb/ #{@outdir}#{@zonedir}/tmp/namedb/#{@zonename}.db`
+                  `dnssec-signzone -o #{@zonename} -e +120days -K #{@outdir}/#{@zonedir}/tmp/namedb/ #{@outdir}#{@zonedir}/tmp/namedb/#{@zonename}.db`
                   `mv dsset-#{@zonename}. #{@outdir}/#{@zonedir}/tmp/namedb/`
                 end
 		create_named_conf
@@ -89,8 +89,8 @@ class Zone
 
 private
 	def create_dnskeys
-                @kskname = `/usr/sbin/dnssec-keygen -K #{@outdir}#{@zonedir}/tmp/namedb/ -r /dev/urandom -f KSK -a RSASHA1 -b 1024 #{@zonename}.`
-                @zskname = `/usr/sbin/dnssec-keygen -K #{@outdir}#{@zonedir}/tmp/namedb/ -r /dev/urandom -a RSASHA1 -b 512 #{@zonename}.`
+                @kskname = `dnssec-keygen -K #{@outdir}#{@zonedir}/tmp/namedb/ -r /dev/urandom -f KSK -a RSASHA1 -b 1024 #{@zonename}.`
+                @zskname = `dnssec-keygen -K #{@outdir}#{@zonedir}/tmp/namedb/ -r /dev/urandom -a RSASHA1 -b 512 #{@zonename}.`
 		@kskname = @kskname.chomp
 		@zskname = @zskname.chomp
 		@kskdata = File.read(@outdir+@zonedir+"/tmp/namedb/"+@kskname+".key")
@@ -130,8 +130,8 @@ class Root < Zone
 	end
 
         def create_dnskeys
-                @kskname = `/usr/sbin/dnssec-keygen -K #{@outdir}#{@zonedir}/tmp/namedb/ -r /dev/urandom -f KSK -a RSASHA1 -b 1024 .`
-                @zskname = `/usr/sbin/dnssec-keygen -K #{@outdir}#{@zonedir}/tmp/namedb/ -r /dev/urandom -a RSASHA1 -b 512 .`
+                @kskname = `dnssec-keygen -K #{@outdir}#{@zonedir}/tmp/namedb/ -r /dev/urandom -f KSK -a RSASHA1 -b 1024 .`
+                @zskname = `dnssec-keygen -K #{@outdir}#{@zonedir}/tmp/namedb/ -r /dev/urandom -a RSASHA1 -b 512 .`
                 @kskname = @kskname.chomp
                 @zskname = @zskname.chomp
                 @kskdata = File.read(@outdir+@zonedir+"tmp/namedb/"+@kskname+".key")
