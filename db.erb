@@ -20,9 +20,8 @@ www	IN	A	192.168.1.1
 
 mail	IN	A	192.168.1.2
 
-<% File.open(File.expand_path(APP_ROOT) + "/labels.txt") do |file| %>
-<% while line = file.gets %>
-<% line.chomp! %>
-<%=line %> IN	A	192.168.1.<%= rand(254) %>
-<% end %>
-<% end %>
+<% for name in @namelist do -%>
+<% if /#{soa}$/ =~ name.chomp -%>
+<%= name.chomp %> IN A 192.168.1.<%= rand(254) %>
+<% end -%>
+<% end -%>

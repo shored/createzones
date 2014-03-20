@@ -8,11 +8,11 @@
 #AAA.AAA.AAA.AAA		BBB.BBB.BBB.BBB		ドメイン名    (ディレクトリ名)   (yes/no)
 
 # 読みファイル
-# samplehosts
+# samplehosts (用意できるノード一覧)
 # domainlist.txt
 
 ## gather の吐いた hosts ファイルを読んで吐き出す
-## ドメイン名リストは別途用意
+## ドメイン名リストは別途用意 > domainlist.txt
 ## 1. hosts ファイルから vm を集める
 ## 右辺値の書式は決まっている
 ## myrid-Int-myAS-peerAS

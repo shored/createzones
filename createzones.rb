@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 # Create zones, keys, signed zones, and named.conf from a fixed template and a hostlist
 # ルートの時の処理が美しくない
+# 最後に名前を各ゾーンに入れ込む処理が必要
 
 # Read files : domains.txt
 
@@ -21,7 +22,7 @@ class Zone
 #	end
 
 	def zonedata
-		data = ERB.new(File.read(File.dirname(File.expand_path(__FILE__)) + "/db.erb")).result(binding)
+		data = ERB.new(File.read(File.dirname(File.expand_path(__FILE__)) + "/db.erb"), nil, '-').result(binding)
 		unless @child_zones == nil
 			for child in @child_zones do
 				puts "child:"+child.zonename
@@ -51,6 +52,8 @@ class Zone
                 end
 		@zonedir = zonedir +"/"
                 @outdir = outdir
+
+		open("namelist.txt") {|file| @namelist = file.readlines }
 
 		@soa = 'ns.'+zonename
           	@issigned = ''
