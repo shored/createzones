@@ -29,6 +29,7 @@ require 'ipaddr'
 
 start_puppet_addr = "192.168.0.1"
 start_ns_addr = "192.168.100.1"
+dnssec_enabled = "yes"
 
 results = []
 
@@ -71,13 +72,13 @@ end
 cur_ns_addr = IPAddr.new(start_ns_addr)
 cur_puppet_addr = IPAddr.new(start_puppet_addr)
 
-printf("%s	%s	%s	%s	%s\n", cur_puppet_addr, cur_ns_addr, ".", cur_ns_addr, "yes")
+printf("%s	%s	%s	%s	%s\n", cur_puppet_addr, cur_ns_addr, ".", cur_ns_addr, dnssec_enabled)
 
 i = 1
 domains.each do |domain|
 	printf("%s	%s	%s	%s	%s\n",
 		IPAddr.new(cur_puppet_addr.to_i + i , Socket::AF_INET),
 		IPAddr.new(cur_ns_addr.to_i + i, Socket::AF_INET),
-		domains[i].sub(/.$/, ""), IPAddr.new(cur_ns_addr.to_i + i, Socket::AF_INET), "yes")
+		domain.sub(/.$/, ""), IPAddr.new(cur_ns_addr.to_i + i, Socket::AF_INET), dnssec_enabled)
 	i += 1
 end

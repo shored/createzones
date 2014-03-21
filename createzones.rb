@@ -9,6 +9,7 @@ require 'erb'
 require 'optparse'
 require 'fileutils'
 
+
 class Zone
 	attr_accessor :ns2, :child_zones
 	attr_reader :zonename, :ns, :soa, :manageaddr, :zonedir, :isdnssec
@@ -21,6 +22,14 @@ class Zone
 #		end
 #	end
 
+	def issigned
+		return @issigned
+	end
+
+	def issigned=(value)
+		@issigned = value
+	end
+
 	def zonedata
 		data = ERB.new(File.read(File.dirname(File.expand_path(__FILE__)) + "/db.erb"), nil, '-').result(binding)
 		unless @child_zones == nil
@@ -29,7 +38,7 @@ class Zone
 				data += child.headlabel+"    IN    NS    ns."+child.headlabel+"\n"
 				data += "ns."+child.headlabel+"	IN	A	"+child.manageaddr+"\n"
 				# 署名しないゾーンはどうしようか?
-                                if (@issigned != "")
+                                if (child.issigned != "")
                                   data += File.read(@outdir+child.zonedir+"/tmp/namedb/dsset-"+child.zonename+".")
                                 end
 			end
@@ -71,7 +80,7 @@ class Zone
 			file.puts(zonedata)
 		end
                 if (@issigned != "")
-                  `/usr/sbin/dnssec-signzone -o #{@zonename} -e +120days -K #{@outdir}/#{@zonedir}/tmp/namedb/ #{@outdir}#{@zonedir}/tmp/namedb/#{@zonename}.db`
+                  `#{$dnssec_signzone_exec} -o #{@zonename} -e +120days -K #{@outdir}/#{@zonedir}/tmp/namedb/ #{@outdir}#{@zonedir}/tmp/namedb/#{@zonename}.db`
                   `mv dsset-#{@zonename}. #{@outdir}/#{@zonedir}/tmp/namedb/`
                 end
 		create_named_conf
@@ -91,8 +100,8 @@ class Zone
 private
 	def create_dnskeys
 		if ( $no_create_dnskey != true)
-              	  @kskname = `/usr/sbin/dnssec-keygen -K #{@outdir}#{@zonedir}/tmp/namedb/ -r /dev/urandom -f KSK -a RSASHA1 -b 1024 #{@zonename}.`
-              	  @zskname = `/usr/sbin/dnssec-keygen -K #{@outdir}#{@zonedir}/tmp/namedb/ -r /dev/urandom -a RSASHA1 -b 512 #{@zonename}.`
+              	  @kskname = `#{$dnssec_keygen_exec} -K #{@outdir}#{@zonedir}/tmp/namedb/ -r /dev/urandom -f KSK -a RSASHA1 -b 1024 #{@zonename}.`
+              	  @zskname = `#{$dnssec_keygen_exec} -K #{@outdir}#{@zonedir}/tmp/namedb/ -r /dev/urandom -a RSASHA1 -b 512 #{@zonename}.`
 		end
 
 		@kskname = @kskname.chomp
@@ -134,8 +143,8 @@ class Root < Zone
 	end
 
         def create_dnskeys
-                @kskname = `/usr/sbin/dnssec-keygen -K #{@outdir}#{@zonedir}/tmp/namedb/ -r /dev/urandom -f KSK -a RSASHA1 -b 1024 .`
-                @zskname = `/usr/sbin/dnssec-keygen -K #{@outdir}#{@zonedir}/tmp/namedb/ -r /dev/urandom -a RSASHA1 -b 512 .`
+                @kskname = `#{$dnssec_keygen_exec} -K #{@outdir}#{@zonedir}/tmp/namedb/ -r /dev/urandom -f KSK -a RSASHA1 -b 1024 .`
+                @zskname = `#{$dnssec_keygen_exec} -K #{@outdir}#{@zonedir}/tmp/namedb/ -r /dev/urandom -a RSASHA1 -b 512 .`
                 @kskname = @kskname.chomp
                 @zskname = @zskname.chomp
                 @kskdata = File.read(@outdir+@zonedir+"tmp/namedb/"+@kskname+".key")
@@ -168,10 +177,10 @@ class Tree
 	end
 
 	def save
-		@zones_sorted = @zones.sort { |a1, a2|
+		zones_sorted = @zones.sort { |a1, a2|
 			a2.zonename.length <=> a1.zonename.length
 		}
-		for zone in @zones_sorted do
+		for zone in zones_sorted do
 			zone.save_zonedata
 			puts zone.zonedata
 		end
@@ -180,6 +189,7 @@ class Tree
 private
 
 	def search_child_zones
+		# この段階で上位が sign されていない場合非署名にする必要あり
 		for zone in @zones do
 			unless (zone.zonename == '.')
 					zone.child_zones = []
@@ -203,6 +213,17 @@ private
 				end
 			end
 		end
+		# 短い順（上位ドメイン順）にソート
+		zones_sorted = @zones.sort { |a1, a2|
+			a1.zonename.length <=> a2.zonename.length
+		}
+		for zone in zones_sorted do
+			if zone.issigned == ""
+				zone.child_zones.each do |child|
+					child.issigned = ""
+				end
+			end
+		end
 	end
 end
 
@@ -210,6 +231,8 @@ opterr = false
 nsconfig = "nsconfig.txt"
 outdir = "zones/"
 $no_create_dnskey = false
+$dnssec_keygen_exec = '/usr/sbin/dnssec-keygen'
+$dnssec_signzone_exec = '/usr/sbin/dnssec-signzone'
 
 open("namelist.txt") {|file| $namelist = file.readlines }
 
