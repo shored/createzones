@@ -21,7 +21,10 @@ www	IN	A	192.168.1.1
 mail	IN	A	192.168.1.2
 
 <% for name in $namelist do -%>
-<% if /#{soa}$/ =~ name.chomp -%>
-<%= name.chomp %> IN A 192.168.1.<%= rand(254) %>
+<% if /#{zonename}$/ =~ name.chomp -%>
+<% label = name.chomp.sub(/\.#{zonename}$/, "") -%>
+<%  if !(/\./ =~ label) %>
+<%= label %> IN A 192.168.1.<%= rand(254) %>
+<%  end -%>
 <% end -%>
 <% end -%>

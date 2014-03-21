@@ -10,7 +10,7 @@ STDIN.each do |line|
 	labels = line.chomp.split('.')
 	current_name = ""
 	i = labels.size - 1
-	while  i > 1
+	while  i > 0
 		current_name = labels[i] + "." + current_name
 		domains[current_name] = 1
 		i -= 1
