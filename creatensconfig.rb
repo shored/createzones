@@ -1,6 +1,8 @@
 #!/usr/bin/ruby
 # -*- coding: utf-8 -*-
 
+require 'ipaddr'
+
 ## create nsconfig.txt file
 ## 管理アドレスとサーバアドレスとドメインの組
 
@@ -24,8 +26,16 @@
 
 ## results は result の配列
 ## result[ アドレスブロック(=使用アドレス), ルータID(=管理アドレス)] 
-file = open("samplehosts")
+
+start_puppet_addr = "192.168.0.2"
+start_ns_addr = "192.168.100.2"
+
 results = []
+
+### create nsconfig from hostfile
+=begin
+file = open("samplehosts")
+
 while line = file.gets
 #  print line if /vm/ =~ line
   if /^[^#].*AS/ =~ line
@@ -37,6 +47,7 @@ while line = file.gets
 	end
   end
 end
+=end
 
 ## results に ドメイン名をくっつける
 file_domain = open("domainlist.txt")
@@ -47,8 +58,23 @@ end
 
 ## ラベルの少ない方からくっつけていけば、親が居ないという事態は無い
 domains.sort!{|a, b| a.length <=> b.length }
+
+=begin
 i = 0
 for result in results
 	printf("%s	%s	%s	%s	%s\n", result[0], result[1], domains[i], result[1], "yes")
+	i += 1
+end
+=end
+
+### Create nsconfig without hostfile
+cur_ns_addr = IPAddr.new(start_ns_addr)
+cur_puppet_addr = IPAddr.new(start_puppet_addr)
+i = 0
+domains.each do |domain|
+	printf("%s	%s	%s	%s	%s\n",
+		IPAddr.new(cur_puppet_addr.to_i + i , Socket::AF_INET),
+		IPAddr.new(cur_ns_addr.to_i + i, Socket::AF_INET),
+		domains[i].sub(/.$/, ""), IPAddr.new(cur_ns_addr.to_i + i, Socket::AF_INET), "yes")
 	i += 1
 end
