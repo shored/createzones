@@ -53,8 +53,6 @@ class Zone
 		@zonedir = zonedir +"/"
                 @outdir = outdir
 
-		open("namelist.txt") {|file| @namelist = file.readlines }
-
 		@soa = 'ns.'+zonename
           	@issigned = ''
           	if (isdnssec == "yes")
@@ -92,8 +90,11 @@ class Zone
 
 private
 	def create_dnskeys
-                @kskname = `/usr/sbin/dnssec-keygen -K #{@outdir}#{@zonedir}/tmp/namedb/ -r /dev/urandom -f KSK -a RSASHA1 -b 1024 #{@zonename}.`
-                @zskname = `/usr/sbin/dnssec-keygen -K #{@outdir}#{@zonedir}/tmp/namedb/ -r /dev/urandom -a RSASHA1 -b 512 #{@zonename}.`
+		if ( $no_create_dnskey != true)
+              	  @kskname = `/usr/sbin/dnssec-keygen -K #{@outdir}#{@zonedir}/tmp/namedb/ -r /dev/urandom -f KSK -a RSASHA1 -b 1024 #{@zonename}.`
+              	  @zskname = `/usr/sbin/dnssec-keygen -K #{@outdir}#{@zonedir}/tmp/namedb/ -r /dev/urandom -a RSASHA1 -b 512 #{@zonename}.`
+		end
+
 		@kskname = @kskname.chomp
 		@zskname = @zskname.chomp
 		@kskdata = File.read(@outdir+@zonedir+"/tmp/namedb/"+@kskname+".key")
@@ -208,10 +209,15 @@ end
 opterr = false
 nsconfig = "nsconfig.txt"
 outdir = "zones/"
+$no_create_dnskey = false
+
+open("namelist.txt") {|file| $namelist = file.readlines }
+
 
 opt = OptionParser.new
 opt.on('-n', '--nsconfig=VAL', 'specify ns configuration file') {|v| nsconfig = v}
 opt.on('-o', '--outdir=VAL', 'specify output directory name') {|v| outdir = v}
+opt.on('-k', '--no-dnskey') {|v| $no_create_dnskey = true }
 opt.parse!(ARGV)
 if opterr
   STDERR.print opt.help
