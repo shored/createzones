@@ -94,7 +94,7 @@ class Zone
 	end
 
 	def headlabel
-		return @zonename.slice(/^[a-zA-Z0-9]*/)
+		return @zonename.slice(/^[a-zA-Z0-9\-]*/)
 	end
 
 private
