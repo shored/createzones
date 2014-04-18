@@ -26,5 +26,5 @@ logging {
 
 zone "." {
         type master;
-        file "/tmp/namedb/fakeroot.zone";
+        file "/tmp/namedb/fakeroot.zone<%= @issigned %>";
 };
