@@ -133,6 +133,10 @@ class Root < Zone
 		File.open(@outdir+@zonedir+"/tmp/namedb/"+"fakeroot.zone", "w") do |file|
 			file.puts(zonedata)
 		end
+                if (@issigned != "")
+                  `#{$dnssec_signzone_exec} -o #{@zonename} -e +120days -K #{@outdir}/#{@zonedir}/tmp/namedb/ #{@outdir}#{@zonedir}/tmp/namedb/fakeroot.zone`
+                  `mv dsset-. #{@outdir}/#{@zonedir}/tmp/namedb/`
+		end
 		create_named_conf
 	end
 
@@ -153,6 +157,11 @@ class Root < Zone
 				# 署名しないゾーンはどうしようか?
 #				data += File.read(@outdir+child.manageaddr+"/dsset-"+child.zonename+".")
 			end
+		end
+
+		if (@issigned != "")
+			data += @zskdata
+			data += @kskdata
 		end
 
 		return data
