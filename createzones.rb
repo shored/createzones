@@ -100,9 +100,24 @@ class Zone
 private
 	def create_dnskeys
 		if ( $no_create_dnskey != true)
-              	  @kskname = `#{$dnssec_keygen_exec} -K #{@outdir}#{@zonedir}/tmp/namedb/ -r /dev/urandom -f KSK -a RSASHA1 -b 1024 #{@zonename}.`
-              	  @zskname = `#{$dnssec_keygen_exec} -K #{@outdir}#{@zonedir}/tmp/namedb/ -r /dev/urandom -a RSASHA1 -b 512 #{@zonename}.`
+			keyfiles = Dir.glob(@outdir+@zonedir+"/tmp/namedb/" + "*.key")
+			if keyfiles != []
+				for filename in keyfiles do
+					file = File.open(filename)
+					keydata = file.read
+					if (/IN DNSKEY 256/ =~ keydata)
+						@zskname = File.basename(filename).sub(".key", "")
+					elsif (/IN DNSKEY 257/ =~ keydata)
+						@kskname = File.basename(filename).sub(".key", "")
+					end
+				end
+			else
+              		  @kskname = `#{$dnssec_keygen_exec} -K #{@outdir}#{@zonedir}/tmp/namedb/ -r /dev/urandom -f KSK -a RSASHA1 -b 1024 #{@zonename}.`
+      	        	  @zskname = `#{$dnssec_keygen_exec} -K #{@outdir}#{@zonedir}/tmp/namedb/ -r /dev/urandom -a RSASHA1 -b 512 #{@zonename}.`
+			end
 		end
+		p @kskname
+		p @zskname
 
 		@kskname = @kskname.chomp
 		@zskname = @zskname.chomp
@@ -143,8 +158,8 @@ class Root < Zone
 	end
 
         def create_dnskeys
-                @kskname = `#{$dnssec_keygen_exec} -K #{@outdir}#{@zonedir}/tmp/namedb/ -r /dev/urandom -f KSK -a RSASHA1 -b 1024 .`
-                @zskname = `#{$dnssec_keygen_exec} -K #{@outdir}#{@zonedir}/tmp/namedb/ -r /dev/urandom -a RSASHA1 -b 512 .`
+              	@kskname = `#{$dnssec_keygen_exec} -K #{@outdir}#{@zonedir}/tmp/namedb/ -r /dev/urandom -f KSK -a RSASHA1 -b 1024 .`
+               	@zskname = `#{$dnssec_keygen_exec} -K #{@outdir}#{@zonedir}/tmp/namedb/ -r /dev/urandom -a RSASHA1 -b 512 .`
                 @kskname = @kskname.chomp
                 @zskname = @zskname.chomp
                 @kskdata = File.read(@outdir+@zonedir+"tmp/namedb/"+@kskname+".key")
