@@ -156,6 +156,9 @@ class Root < Zone
 				data += "ns."+child.headlabel+"	IN	A	"+child.manageaddr+"\n"
 				# 署名しないゾーンはどうしようか?
 #				data += File.read(@outdir+child.manageaddr+"/dsset-"+child.zonename+".")
+                                if (child.issigned != "")
+                                  data += File.read(@outdir+child.zonedir+"/tmp/namedb/dsset-"+child.zonename+".")
+                                end
 			end
 		end
 
@@ -217,15 +220,15 @@ private
 		# この段階で上位が sign されていない場合非署名にする必要あり
 		for zone in @zones do
 			unless (zone.zonename == '.')
-					zone.child_zones = []
-					for zone_searching in @zones do
-						pattern = Regexp.new("^[a-zA-Z0-9\-]*\."+zone.zonename)
-						if pattern =~ zone_searching.zonename
-							zone.child_zones << zone_searching
-							puts "zone "+zone.zonename+" has child:\n"
-							puts zone_searching.zonename+"\n"
-						end
+				zone.child_zones = []
+				for zone_searching in @zones do
+					pattern = Regexp.new("^[a-zA-Z0-9\-]*\."+zone.zonename)
+					if pattern =~ zone_searching.zonename
+						zone.child_zones << zone_searching
+						puts "zone "+zone.zonename+" has child:\n"
+						puts zone_searching.zonename+"\n"
 					end
+				end
 			else
 				zone.child_zones = []
 				for zone_searching in @zones do
