@@ -2,6 +2,19 @@
 # -*- coding: utf-8 -*-
 
 require 'ipaddr'
+require 'optparse'
+
+$dnssec_enabled = "yes"
+
+opterr = false
+
+opt = OptionParser.new
+opt.on('-k', '--no-dnskey') {|v| $dnssec_enabled = "no" }
+opt.parse!(ARGV)
+if opterr
+  STDERR.print opt.help
+  exit 1
+end
 
 ## create nsconfig.txt file
 ## 管理アドレスとサーバアドレスとドメインの組
@@ -29,7 +42,6 @@ require 'ipaddr'
 
 start_puppet_addr = "192.168.0.1"
 start_ns_addr = "192.168.100.1"
-dnssec_enabled = "yes"
 
 results = []
 
@@ -71,14 +83,16 @@ end
 ### Create nsconfig without hostfile
 cur_ns_addr = IPAddr.new(start_ns_addr)
 cur_puppet_addr = IPAddr.new(start_puppet_addr)
+cur_out_dir = cur_ns_addr
+cur_out_dir = "files-"
 
-printf("%s	%s	%s	%s	%s\n", cur_puppet_addr, cur_ns_addr, ".", cur_ns_addr, dnssec_enabled)
+printf("%s	%s	%s	%s	%s\n", cur_puppet_addr, cur_ns_addr, ".", cur_out_dir + "0", $dnssec_enabled)
 
 i = 1
 domains.each do |domain|
 	printf("%s	%s	%s	%s	%s\n",
 		IPAddr.new(cur_puppet_addr.to_i + i , Socket::AF_INET),
 		IPAddr.new(cur_ns_addr.to_i + i, Socket::AF_INET),
-		domain.sub(/.$/, ""), IPAddr.new(cur_ns_addr.to_i + i, Socket::AF_INET), dnssec_enabled)
+		domain.sub(/.$/, ""), cur_out_dir + i.to_s, $dnssec_enabled)
 	i += 1
 end
