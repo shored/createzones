@@ -52,7 +52,7 @@ class Zone
 		return data
 	end
 
-	def initialize(nsaddr = nil, manageaddr = nil, zonename = nil, zonedir = nil, isdnssec = "yes", outdir = "zones/")
+	def initialize(nsaddr = nil, manageaddr = nil, zonename = nil, zonedir = nil, isdnssec = "yes", outdir = "zones/", ttl = 1800)
 		@zonename = zonename
 		@ns = nsaddr
 		@manageaddr = manageaddr
@@ -61,6 +61,7 @@ class Zone
                 end
 		@zonedir = zonedir +"/"
                 @outdir = outdir
+		@ttl = ttl
 
 		@soa = 'ns.'+zonename
           	@issigned = ''
@@ -169,7 +170,7 @@ class Root < Zone
 end
 
 class Tree
-	def initialize(nsconfig, outdir)
+	def initialize(nsconfig, outdir, ttl)
 		# create output directory
 		unless File.exist?(outdir)
 			Dir.mkdir(outdir)
@@ -181,9 +182,9 @@ class Tree
 			while line = file.gets
 				zone_setting = line.split(nil)
 				if (zone_setting[2] == ".")
-					@zones << Root.new(zone_setting[0], zone_setting[1], zone_setting[2], zone_setting[3], zone_setting[4], outdir)
+					@zones << Root.new(zone_setting[0], zone_setting[1], zone_setting[2], zone_setting[3], zone_setting[4], outdir, ttl)
 				else
-					@zones << Zone.new(zone_setting[0], zone_setting[1], zone_setting[2], zone_setting[3], zone_setting[4], outdir)
+					@zones << Zone.new(zone_setting[0], zone_setting[1], zone_setting[2], zone_setting[3], zone_setting[4], outdir, ttl)
 				end
 			end
 		end
@@ -245,6 +246,7 @@ end
 opterr = false
 nsconfig = "nsconfig.txt"
 outdir = "zones/"
+ttl = 1800
 $no_create_dnskey = false
 $dnssec_keygen_exec = 'dnssec-keygen'
 $dnssec_signzone_exec = 'dnssec-signzone'
@@ -256,6 +258,7 @@ opt = OptionParser.new
 opt.on('-n', '--nsconfig=VAL', 'specify ns configuration file') {|v| nsconfig = v}
 opt.on('-o', '--outdir=VAL', 'specify output directory name') {|v| outdir = v}
 opt.on('-k', '--no-dnskey') {|v| $no_create_dnskey = true }
+opt.on('-t', '--ttl=VAL', 'specify record ttl') {|v| ttl = v}
 opt.parse!(ARGV)
 if opterr
   STDERR.print opt.help
@@ -263,5 +266,5 @@ if opterr
 end
 
 APP_ROOT = Dir.pwd + "/" + File.dirname(__FILE__)
-tree = Tree.new(nsconfig, outdir)
+tree = Tree.new(nsconfig, outdir, ttl)
 tree.save
