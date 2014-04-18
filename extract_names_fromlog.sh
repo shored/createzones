@@ -6,5 +6,5 @@
 #output: namedlist.txt - all queried names
 #output: domainlist.txt - zones which contains all queried names
 
-cat $1 | awk '{print $7}' | sort | uniq > namelist.txt
+cat $1 | awk '{print $7}' | grep -v '\\' | sort | uniq > namelist.txt
 cat namelist.txt | /usr/bin/ruby enumalldomains.rb | sort > domainlist.txt
