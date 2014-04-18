@@ -231,8 +231,8 @@ opterr = false
 nsconfig = "nsconfig.txt"
 outdir = "zones/"
 $no_create_dnskey = false
-$dnssec_keygen_exec = '/usr/sbin/dnssec-keygen'
-$dnssec_signzone_exec = '/usr/sbin/dnssec-signzone'
+$dnssec_keygen_exec = 'dnssec-keygen'
+$dnssec_signzone_exec = 'dnssec-signzone'
 
 open("namelist.txt") {|file| $namelist = file.readlines }
 
