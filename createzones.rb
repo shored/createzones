@@ -222,7 +222,7 @@ private
 			unless (zone.zonename == '.')
 				zone.child_zones = []
 				for zone_searching in @zones do
-					pattern = Regexp.new("^[a-zA-Z0-9\-]*\."+zone.zonename)
+					pattern = Regexp.new("^[a-zA-Z0-9\-]*\."+zone.zonename+"$")
 					if pattern =~ zone_searching.zonename
 						zone.child_zones << zone_searching
 						puts "zone "+zone.zonename+" has child:\n"
