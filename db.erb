@@ -1,7 +1,7 @@
 ;
 ; This zonedata is written by db.rb
 ;
-$TTL	1800
+$TTL	<%= @ttl %>
 @	IN	SOA	<%= soa %>. root.<%= soa %>. (
 			      1		; Serial
 			 604800		; Refresh
@@ -12,13 +12,6 @@ $TTL	1800
 @	IN	NS	ns
 
 ns	IN	A	<%= ns %>
-
-www	IN	A	192.168.1.1
-	IN	AAAA	ff02::1
-
-	IN	MX	10	mail
-
-mail	IN	A	192.168.1.2
 
 <% for name in $namelist do -%>
 <% if /#{zonename}$/ =~ name.chomp -%>
