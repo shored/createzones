@@ -53,7 +53,7 @@ class Zone
 	end
 
 	def initialize(nsaddr = nil, manageaddr = nil, zonename = nil, zonedir = nil, isdnssec = "yes", outdir = "zones/", ttl = 1800)
-		@zonename = zonename
+		@zonename = zonename.downcase
 		@ns = nsaddr
 		@manageaddr = manageaddr
                 if (zonedir == nil)
