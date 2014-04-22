@@ -263,8 +263,7 @@ $no_create_dnskey = false
 $dnssec_keygen_exec = 'dnssec-keygen'
 $dnssec_signzone_exec = 'dnssec-signzone'
 
-open( Dir.pwd + "/" + File.dirname(__FILE__) + "/namelist.txt") {|file| $namelist = file.readlines }
-
+open( Dir.pwd + "/" + "namelist.txt") {|file| $namelist = file.readlines }
 
 opt = OptionParser.new
 opt.on('-n', '--nsconfig=VAL', 'specify ns configuration file') {|v| nsconfig = v}
