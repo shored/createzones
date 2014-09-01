@@ -188,6 +188,7 @@ class Tree
 			Dir.mkdir(outdir)
 		end
 
+		@outdir = outdir
 		@zones = []
 		# 設定を引っ張って
 		File.open(nsconfig) do |file|
@@ -212,6 +213,17 @@ class Tree
 			zone.save_zonedata
 			puts zone.zonedata
 		end
+		File.open(@outdir+"topology.dot", "w") do |treedata|
+			treedata.puts("graph topology { ")
+			for zone in zones_sorted do
+				if zone.child_zones != []
+					for child_zone in zone.child_zones do
+						treedata.puts("\"" + zone.zonename + "\"" + " -- " + "\"" + child_zone.zonename + "\"")
+					end
+				end
+			end
+			treedata.puts("}")
+		end
 	end
 
 private
@@ -222,7 +234,7 @@ private
 			unless (zone.zonename == '.')
 				zone.child_zones = []
 				for zone_searching in @zones do
-					pattern = Regexp.new("^[a-zA-Z0-9\-]*\."+zone.zonename+"$")
+					pattern = Regexp.new("^[a-zA-Z0-9\\-]*\\."+zone.zonename+"$")
 					if pattern =~ zone_searching.zonename
 						zone.child_zones << zone_searching
 						puts "zone "+zone.zonename+" has child:\n"
@@ -232,7 +244,7 @@ private
 			else
 				zone.child_zones = []
 				for zone_searching in @zones do
-					pattern = Regexp.new("^[a-zA-Z0-9\-]*$")
+					pattern = Regexp.new("^[a-zA-Z0-9\\-]*$")
 					if pattern =~ zone_searching.zonename
 						zone.child_zones << zone_searching
 						puts "zone "+zone.zonename+" has child:\n"
