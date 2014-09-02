@@ -216,6 +216,7 @@ class Tree
 		File.open(@outdir+"topology.dot", "w") do |treedata|
 			treedata.puts("graph topology { ")
 			for zone in zones_sorted do
+				treedata.puts("\"" + zone.zonename + "\" [" + "label = \""+ zone.headlabel + "\"]")
 				if zone.child_zones != []
 					for child_zone in zone.child_zones do
 						treedata.puts("\"" + zone.zonename + "\"" + " -- " + "\"" + child_zone.zonename + "\"")
